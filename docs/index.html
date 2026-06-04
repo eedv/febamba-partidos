@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEBAMBA · Formativas</title>
+<meta name="description" content="Resultados, posiciones y próximos partidos de las categorías formativas de FEBAMBA">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1>FEBAMBA · Formativas</h1>
+    <p class="subtitle">Resultados, posiciones y fixture de las categorías menores</p>
+  </div>
+</header>
+
+<nav class="filters" aria-label="Filtros">
+  <div class="filters-inner">
+    <div class="filter-group">
+      <label for="cat">Categoría</label>
+      <select id="cat"></select>
+    </div>
+    <div class="filter-group">
+      <label for="fase">Fase</label>
+      <select id="fase"></select>
+    </div>
+    <div class="filter-group">
+      <label for="grupo">Grupo</label>
+      <select id="grupo"></select>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="tabs" role="tablist" aria-label="Secciones">
+    <button role="tab" aria-selected="true" data-tab="posiciones">Posiciones</button>
+    <button role="tab" aria-selected="false" data-tab="proximos">Próximos</button>
+    <button role="tab" aria-selected="false" data-tab="resultados">Resultados</button>
+    <button role="tab" aria-selected="false" data-tab="equipos">Equipos</button>
+  </div>
+
+  <section id="tab-posiciones" role="tabpanel" aria-label="Posiciones">
+    <div class="table-wrap">
+      <table id="tbl-posiciones">
+        <thead>
+          <tr><th>#</th><th></th><th>Equipo</th><th>PJ</th><th>PG</th><th>PP</th><th>PF</th><th>PC</th><th>Pts</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-proximos" role="tabpanel" hidden aria-label="Próximos partidos">
+    <div class="table-wrap">
+      <table id="tbl-proximos">
+        <thead>
+          <tr><th>Local</th><th></th><th>Visitante</th><th>Fecha</th><th>Cancha</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-resultados" role="tabpanel" hidden aria-label="Resultados">
+    <p id="jornada-label" class="jornada-label"></p>
+    <div class="table-wrap">
+      <table id="tbl-resultados">
+        <thead>
+          <tr><th>Local</th><th></th><th></th><th>Visitante</th><th>Fecha</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-equipos" role="tabpanel" hidden aria-label="Equipos">
+    <div class="table-wrap">
+      <table id="tbl-equipos">
+        <thead>
+          <tr><th></th><th>Equipo</th><th>Club</th><th>Localidad</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Datos obtenidos de <a href="https://competicionescabb.gesdeportiva.es/" target="_blank" rel="noopener">CABB</a> vía <a href="https://febamba.com" target="_blank" rel="noopener">FEBAMBA</a></p>
+  <p class="updated" id="update-info">Cargando…</p>
+</footer>
+
+</body>
+</html>
