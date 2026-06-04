@@ -40,14 +40,16 @@ function renderCategorias() {
   onChangeCat()
 }
 
-function fillSelect(sel, items, selected) {
+function fillSelect(sel, items, selected, sortByLabel) {
   sel.innerHTML = ''
-  for (const [val, label] of Object.entries(items)) {
+  let entries = Object.entries(items)
+  if (sortByLabel) entries.sort((a, b) => a[1].localeCompare(b[1], 'es'))
+  for (const [val, label] of entries) {
     const o = document.createElement('option')
     o.value = val; o.textContent = label
     sel.appendChild(o)
   }
-  sel.value = selected ?? Object.keys(items)[0] ?? ''
+  sel.value = selected ?? entries[0]?.[0] ?? ''
 }
 
 function onChangeCat() {
@@ -61,7 +63,7 @@ function onChangeFase() {
   estado.fase = selFase.value
   const cat = data.data[estado.cat]
   const grupos = cat.grupos[estado.fase] ?? {}
-  fillSelect(selGrupo, grupos)
+  fillSelect(selGrupo, grupos, null, true)
   onChangeGrupo()
 }
 
