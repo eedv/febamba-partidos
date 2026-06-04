@@ -174,7 +174,7 @@ def parse_equipos(soup):
     items = []
     for row in table.select("tbody tr"):
         cols = row.select("td")
-        if len(cols) < 7:
+        if len(cols) < 6:
             continue
         img = cols[0].select_one("img")
         escudo = img.get("src") if img else ""
@@ -182,8 +182,8 @@ def parse_equipos(soup):
             "nombre": cols[1].get_text(strip=True),
             "club": cols[2].get_text(strip=True),
             "localidad": cols[3].get_text(strip=True),
-            "color1": cols[5].get_text(strip=True),
-            "color2": cols[6].get_text(strip=True),
+            "color1": cols[4].get_text(strip=True),
+            "color2": cols[5].get_text(strip=True),
             "escudo": escudo,
         })
     return items

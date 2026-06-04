@@ -2,6 +2,7 @@ const DATA_URL = 'data/datos.json'
 
 let data = null
 let estado = { cat: null, fase: null, grupo: null }
+let escudoMap = {}
 
 const $ = (s, ctx = document) => ctx.querySelector(s)
 const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)]
@@ -18,6 +19,7 @@ async function load() {
     const r = await fetch(DATA_URL + '?_=' + Date.now())
     if (!r.ok) throw new Error(`HTTP ${r.status}`)
     data = await r.json()
+    buildEscudoMap()
     renderCategorias()
     updateInfo.textContent = 'Datos actualizados'
   } catch (e) {
@@ -151,11 +153,25 @@ function renderEquipos() {
   const items = getCat().equipos[gid()] ?? []
   if (!items.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Sin datos de equipos</td></tr>'; return }
   tbody.innerHTML = items.map(r => `<tr>
-    <td>${r.escudo ? `<img class="escudo escudo-sm" src="https://competicionescabb.gesdeportiva.es${r.escudo}" alt="" loading="lazy">` : ''}</td>
+    <td>${escudo(r.nombre, 22)}</td>
     <td class="team-name">${escape(r.nombre)}</td>
     <td>${escape(r.club)}</td>
     <td>${escape(r.localidad)}</td>
   </tr>`).join('')
+}
+
+function buildEscudoMap() {
+  escudoMap = {}
+  for (const catId of Object.keys(data.data)) {
+    const cat = data.data[catId]
+    for (const gid of Object.keys(cat.equipos)) {
+      for (const eq of cat.equipos[gid]) {
+        if (eq.escudo && !escudoMap[eq.nombre]) {
+          escudoMap[eq.nombre] = eq.escudo
+        }
+      }
+    }
+  }
 }
 
 // ── Helpers ──
@@ -165,8 +181,19 @@ function mapsUrl(direccion) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`
 }
 
+window._escudoFallback = function (el, nombre, size) {
+  el.onerror = null
+  el.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=ea580c&color=fff&bold=true&size=${size}`
+}
+
 function escudo(nombre, size = 28) {
-  return `<img class="escudo" style="width:${size}px;height:${size}px" src="https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=ea580c&color=fff&bold=true&size=${size}" alt="" loading="lazy">`
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=ea580c&color=fff&bold=true&size=${size}`
+  const relUrl = escudoMap[nombre]
+  if (relUrl) {
+    const fullUrl = `https://competicionescabb.gesdeportiva.es${relUrl}`
+    return `<img class="escudo" style="width:${size}px;height:${size}px" src="${escape(fullUrl)}" alt="${escape(nombre)}" loading="lazy" onerror="_escudoFallback(this,'${escape(nombre)}',${size})">`
+  }
+  return `<img class="escudo" style="width:${size}px;height:${size}px" src="${escape(avatarUrl)}" alt="${escape(nombre)}" loading="lazy">`
 }
 
 function escape(s) {
