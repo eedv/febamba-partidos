@@ -152,6 +152,7 @@ Cada POST debe incluir:
 | `renderPosiciones()` | Tabla de posiciones con escudos |
 | `renderProximos()` | Próximos partidos con link a Google Maps |
 | `renderResultados()` | Resultados con colores win/loss |
+| `renderCalendario()` | Fixture completo agrupado por jornada, con scores (jugados) o "-" (futuros), scroll automático a última jornada jugada |
 | `renderEquipos()` | Lista de equipos con escudos |
 | `mapsUrl(direccion)` | Genera URL de Google Maps quitando paréntesis |
 | `escudo(nombre, size)` | Renderiza img con escudo real o avatar fallback |

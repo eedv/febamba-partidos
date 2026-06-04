@@ -295,6 +295,25 @@ td:has(.escudo) {
   font-weight: 500;
 }
 
+/* Calendario */
+.jornada-block {
+  margin-bottom: 1.5rem;
+  scroll-margin-top: 1rem;
+}
+
+.jornada-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+  padding: 0.75rem 1rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.jornada-block .table-wrap {
+  border-radius: 0 0 var(--radius) var(--radius);
+  border-top: none;
+}
+
 /* Maps link */
 .map-link {
   color: var(--accent);

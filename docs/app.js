@@ -87,6 +87,7 @@ function renderAll() {
   renderPosiciones()
   renderProximos()
   renderResultados()
+  renderCalendario()
   renderEquipos()
 }
 
@@ -146,6 +147,73 @@ function renderResultados() {
       <td class="num">${r.fecha}</td>
     </tr>`
   }).join('')
+}
+
+function renderCalendario() {
+  const container = $('#cal-container')
+  const items = getCat().calendario[gid()] ?? []
+  if (!items.length) { container.innerHTML = '<p class="empty-state">Sin calendario</p>'; return }
+
+  let html = ''
+  let partidos = []
+  let jNum = ''
+  let jFecha = ''
+  let lastPlayedId = null
+
+  function flush() {
+    if (!partidos.length) return
+    const jId = 'j-' + (jNum || '0')
+    const anyPlayed = partidos.some(p => p.goles_local && p.goles_visitante)
+    if (anyPlayed) lastPlayedId = jId
+
+    html += `<div class="jornada-block" id="${jId}">`
+    html += `<h4 class="jornada-title">Jornada ${escape(jNum)} · ${escape(jFecha)}</h4>`
+    html += `<div class="table-wrap"><table><thead><tr><th>Local</th><th></th><th></th><th>Visitante</th><th>Fecha</th></tr></thead><tbody>`
+    for (const p of partidos) {
+      const jugado = p.goles_local && p.goles_visitante
+      if (jugado) {
+        const pl = p.goles_local
+        const pv = p.goles_visitante
+        const cls = Number(pl) > Number(pv) ? 'score-w' : 'score-l'
+        html += `<tr>
+          <td class="result-local">${escudo(p.local)} ${escape(p.local)}</td>
+          <td class="pts-local ${cls}">${pl}</td>
+          <td class="pts-visit ${cls}">${pv}</td>
+          <td class="result-visit">${escudo(p.visitante)} ${escape(p.visitante)}</td>
+          <td class="num">${formatFechaHora(p.fecha_hora)}</td>
+        </tr>`
+      } else {
+        html += `<tr>
+          <td class="result-local">${escudo(p.local)} ${escape(p.local)}</td>
+          <td class="num score-empty">-</td>
+          <td class="num score-empty">-</td>
+          <td class="result-visit">${escudo(p.visitante)} ${escape(p.visitante)}</td>
+          <td class="num">${formatFechaHora(p.fecha_hora)}</td>
+        </tr>`
+      }
+    }
+    html += `</tbody></table></div></div>`
+    partidos = []
+  }
+
+  for (const item of items) {
+    if (item.tipo === 'jornada') { flush(); jNum = item.numero; jFecha = item.fecha_jornada }
+    else if (item.tipo === 'partido') partidos.push(item)
+  }
+  flush()
+  container.innerHTML = html
+
+  if (lastPlayedId) {
+    setTimeout(() => {
+      const el = document.getElementById(lastPlayedId)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 150)
+  }
+}
+
+function formatFechaHora(fh) {
+  if (!fh) return ''
+  return fh.replace(/(\d{2}\/\d{2}\/\d{4})(\d{2}:\d{2})/, '$1 $2')
 }
 
 function renderEquipos() {
