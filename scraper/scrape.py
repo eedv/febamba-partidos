@@ -15,6 +15,9 @@ HEADERS = {
     "Accept-Language": "es-ES,es;q=0.9",
 }
 CATEGORIES = {
+    "5076": "JUVENILES MASCULINO",   # U17
+    "5077": "CADETES MASCULINO",     # U15
+    "5078": "INFANTILES MASCULINO",  # U13
     "5079": "MINI MASCULINO",
     "5080": "PRE MINI MASCULINO",
     "5081": "MOSQUITOS MASCULINO",
