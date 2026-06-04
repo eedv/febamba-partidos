@@ -295,6 +295,18 @@ td:has(.escudo) {
   font-weight: 500;
 }
 
+/* Maps link */
+.map-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+.map-link:hover {
+  text-decoration-style: solid;
+}
+
 /* Empty state */
 .empty-state {
   padding: 2rem;

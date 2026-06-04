@@ -120,7 +120,7 @@ function renderProximos() {
     <td class="num" style="color:var(--text-3)">vs</td>
     <td class="result-visit">${escudo(r.visitante)} ${escape(r.visitante)}</td>
     <td class="num">${r.fecha}</td>
-    <td title="${escape(r.direccion)}">${escape(r.cancha)}</td>
+    <td>${r.direccion ? `<a href="${mapsUrl(r.direccion)}" target="_blank" rel="noopener" class="map-link">${escape(r.cancha)}</a>` : escape(r.cancha)}</td>
   </tr>`).join('')
 }
 
@@ -159,6 +159,12 @@ function renderEquipos() {
 }
 
 // ── Helpers ──
+function mapsUrl(direccion) {
+  if (!direccion) return ''
+  const addr = direccion.replace(/[()]/g, '').trim()
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`
+}
+
 function escudo(nombre, size = 28) {
   return `<img class="escudo" style="width:${size}px;height:${size}px" src="https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=ea580c&color=fff&bold=true&size=${size}" alt="" loading="lazy">`
 }
